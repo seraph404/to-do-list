@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+:root {
+  --accent: rgb(163, 120, 206);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  color: #464646;
+}
+.container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 90px 1fr;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar main";
+  height: 100vh;
+}
+.sidebar {
+  grid-area: sidebar;
+  min-width: 200px;
+  background-color: #fcfaf8;
+  color: #414141;
+  padding: 15px;
+}
+.logo {
+  font-size: 40px;
+  font-weight: bold;
+  padding: 10px;
+}
+.lists-header {
+  font-size: 16px;
+  padding: 10px;
+  font-weight: bold;
+}
+.sidebar > ul {
+  padding-left: 30px;
+}
+.header {
+  grid-area: header;
+}
+.header h1 {
+  padding: 50px;
+  padding-top: 20px;
+}
+main {
+  grid-area: main;
+  padding: 50px;
+}
+.header,
+main {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
+.todo-item-container {
+  border-bottom: 1px solid gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.todo-item {
+  padding: 20px;
+}
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+button {
+  background-color: var(--accent);
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
