@@ -17,6 +17,38 @@
       </aside>
       <header class="header"><h1>My First List</h1></header>
       <main>
+        <dialog class="modal">
+          <form id="todo-form">
+            <h2>Create To-Do</h2>
+            <div>
+              <label for="title">Title</label>
+              <input type="text" name="todo" required />
+            </div>
+            <div>
+              <label for="description">Description <em>(Optional)</em></label>
+              <textarea name="description"></textarea>
+            </div>
+            <div class="flex">
+              <div>
+                <label for="priority">Priority</label>
+                <select name="prority">
+                  <option value="Unprioritized">Unprioritized</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div>
+                <label for="due-date">Due date</label>
+                <input name="date" type="date" />
+              </div>
+            </div>
+            <div class="modal-buttons">
+              <input type="button" value="Cancel" />
+              <input type="button" value="Create to-do" />
+            </div>
+          </form>
+        </dialog>
         <div class="button-container">
           <button data-action="add" type="button">+ Add new item</button>
         </div>
