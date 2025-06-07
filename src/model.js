@@ -17,13 +17,15 @@ export class Model {
     ];
   }
 
-  addTodo({ title, dueDate, priority }) {
+  addTodo({ title, dueDate, priority, status }) {
     const id = crypto.randomUUID();
+    this.status = "Incomplete";
     const newTodo = new TodoItem({
       id: id,
       title: title,
       dueDate: dueDate,
       priority: priority,
+      status: status,
     });
     this.todos.push(newTodo);
     console.log(this.todos);
@@ -43,10 +45,11 @@ export class Model {
 }
 
 export class TodoItem {
-  constructor({ id, title, dueDate, priority }) {
+  constructor({ id, title, dueDate, priority, status }) {
     this.id = id;
     this.title = title;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.status = status;
   }
 }

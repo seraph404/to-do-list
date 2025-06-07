@@ -29,6 +29,10 @@ export class View {
     this.onDelete = handler;
   }
 
+  bindOnCheck(handler) {
+    this.onCheck = handler;
+  }
+
   handleClick(event) {
     const target = event.target;
     const action = target.dataset.action;
@@ -49,6 +53,11 @@ export class View {
       //this.closeModal();
     } else if (action === "cancel-todo") {
       this.closeModal();
+    } else if (action === "mark-complete") {
+      const container = target.closest(".todo-item-container");
+      const title = container.querySelector(".todo-title");
+      this.onCheck(container.dataset.id);
+      title.style.textDecoration = "line-through";
     }
   }
 
@@ -88,6 +97,12 @@ export class View {
     const todoActions = document.createElement("div");
     const editBtn = document.createElement("button");
     const deleteBtn = document.createElement("button");
+    const checkbox = document.createElement("input");
+
+    checkbox.type = "checkbox";
+    checkbox.dataset.action = "mark-complete";
+    // associate each item with a unique ID
+    todoItemContainer.dataset.id = id;
 
     // classes
     todoItemContainer.classList.add("todo-item-container");
@@ -105,6 +120,7 @@ export class View {
       todoDate.textContent = `Due: ${dueDate}`;
     }
     todoActions.classList.add("todo-actions");
+    checkbox.classList.add("todo-checkbox");
 
     // text
     todoTitle.textContent = title;
@@ -119,6 +135,7 @@ export class View {
     deleteBtn.textContent = "Delete";
 
     // appends
+    todoItemContainer.append(checkbox);
     todoMeta.append(todoPriority, todoDate);
     todoHeader.append(todoTitle, todoMeta);
     todoDetails.append(todoHeader);

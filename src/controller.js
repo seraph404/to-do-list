@@ -14,6 +14,7 @@ export class Controller {
     this.view.bindOnAdd(this.onAdd.bind(this));
     this.view.bindOnEdit(this.onEdit.bind(this));
     this.view.bindOnDelete(this.onDelete.bind(this));
+    this.view.bindOnCheck(this.onCheck.bind(this));
   }
 
   onAdd({ id, title, dueDate, priority }) {
@@ -44,6 +45,10 @@ export class Controller {
       // send directive to model
       this.model.deleteTodo({ id, title, dueDate, priority });
     }
+  }
+
+  onCheck(id) {
+    console.log(`Item ${id} has been marked complete`);
   }
 
   todoExists(id) {
