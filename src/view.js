@@ -12,7 +12,7 @@ export class View {
   }
 
   bindOnAdd(handler) {
-    this.onAdd = handler; // store the callback
+    this.onAdd = handler;
   }
 
   bindOnEdit(handler) {
@@ -26,13 +26,19 @@ export class View {
   handleClick(event) {
     const target = event.target;
     const action = target.dataset.action;
-    console.log(event.target);
+
     if (action === "add") {
-      this.onAdd();
+      this.showModal();
+      //this.onAdd();
     } else if (action === "edit") {
-      console.log("Editing!");
+      this.onEdit();
     } else if (action === "delete") {
-      console.log("Deleting!");
+      this.onDelete();
     }
+  }
+
+  showModal() {
+    console.log("A modal displays!");
+    /* create the modal */
   }
 } // class end
