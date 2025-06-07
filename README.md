@@ -89,4 +89,4 @@ I don't expect these to be perfect - but they at least give me something to star
 
 ## Planning
 
-For my next step, I'm going to experiment a little bit. I am curious how it would be if I were to set up the connections between the files, and sketch out some dummy content (maybe pseudocode mixed with some real syntax?) I will make an effort to update this README going forward.
+For my next step, I started building out `model.js`, `view.js` and `controller.js` which ended up being a lot more complicated than I anticipated (and I was already expecting it to be complicated). Because I wanted to hook up my event listeners right away to the main action buttons on my UI, I had to learn about defining DOM elements in the main entry point (in my case that's `index.js`) and passing them in to View. I also learned (but don't yet fully comprehend) how you need to do a bunch of strange binding stuff to get the View to be able to communicate nicely with the Controller.
