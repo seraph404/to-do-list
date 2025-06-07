@@ -64,16 +64,15 @@ main {
   width: 100%;
   margin: 0 auto;
 }
+.todo-items {
+  margin-top: 20px;
+}
 .todo-item-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border-bottom: 1px solid #e0e0e0;
   padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-  margin-top: 20px;
 }
 .todo-details {
   flex: 1;
@@ -90,21 +89,24 @@ main {
   position: relative;
   cursor: pointer;
 }
-
+.todo-checkbox {
+  transform: scale(1.2);
+  align-self: flex-start;
+  margin-top: 4px;
+  margin-right: 8px;
+}
 .todo-title {
   font-weight: bold;
   color: #777;
 }
 .todo-meta {
   display: flex;
-  flex-direction: column;
   gap: 0.75rem;
   font-size: 1.6rem;
   color: #777;
   margin-right: 20px;
 }
 .todo-priority {
-  padding: 0.15rem 0.5rem;
   border-radius: 4px;
   font-weight: 500;
 }
@@ -125,8 +127,7 @@ main {
 
 .todo-actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 2rem;
   margin-left: 1rem;
 }
 .action-btn {
