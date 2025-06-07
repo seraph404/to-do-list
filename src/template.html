@@ -22,7 +22,7 @@
             <h2>Create To-Do</h2>
             <div>
               <label for="title">Title</label>
-              <input type="text" name="todo" required />
+              <input type="text" name="title" required />
             </div>
             <div>
               <label for="description">Description <em>(Optional)</em></label>
@@ -31,7 +31,7 @@
             <div class="flex">
               <div>
                 <label for="priority">Priority</label>
-                <select name="prority">
+                <select name="priority">
                   <option value="Unprioritized">Unprioritized</option>
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
@@ -40,38 +40,38 @@
               </div>
               <div>
                 <label for="due-date">Due date</label>
-                <input name="date" type="date" />
+                <input name="due-date" type="date" />
               </div>
             </div>
             <div class="modal-buttons">
-              <input type="button" value="Cancel" />
-              <input type="button" value="Create to-do" />
+              <input data-action="cancel-todo" type="button" value="Cancel" />
+              <input
+                data-action="create-todo"
+                type="submit"
+                value="Create to-do"
+              />
             </div>
           </form>
         </dialog>
         <div class="button-container">
-          <button data-action="add" type="button">+ Add new item</button>
+          <button data-action="open-modal" type="button">+ Add new item</button>
         </div>
         <div class="todo-items">
           <div class="todo-item-container">
-            <div class="todo-item">This is my first task</div>
+            <details class="todo-details">
+              <summary class="todo-header">
+                <span class="todo-title">Buy groceries</span>
+                <div class="todo-meta">
+                  <span class="todo-priority high">High</span>
+                  <span class="todo-date">Due: June 10</span>
+                </div>
+              </summary>
+              <div class="todo-description">Milk, eggs, cereal</div>
+            </details>
+
             <div class="todo-actions">
-              <button data-action="edit" type="button">Edit</button>
-              <button data-action="delete" type="button">X</button>
-            </div>
-          </div>
-          <div class="todo-item-container">
-            <div class="todo-item">This is my second task</div>
-            <div class="todo-actions">
-              <button data-action="edit" type="button">Edit</button>
-              <button data-action="delete" type="button">X</button>
-            </div>
-          </div>
-          <div class="todo-item-container">
-            <div class="todo-item">This is my third task</div>
-            <div class="todo-actions">
-              <button data-action="edit" type="button">Edit</button>
-              <button data-action="delete" type="button">X</button>
+              <button class="action-btn" data-action="edit">Edit</button>
+              <button class="action-btn" data-action="delete">Delete</button>
             </div>
           </div>
         </div>

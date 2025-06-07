@@ -9,10 +9,12 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 html,
 body {
   height: 100%;
   font-family: "Inter", sans-serif;
+  font-size: 62.5%;
   color: #464646;
 }
 .container {
@@ -23,6 +25,7 @@ body {
     "sidebar header"
     "sidebar main";
   height: 100vh;
+  font-size: 1.6rem;
 }
 .sidebar {
   grid-area: sidebar;
@@ -32,12 +35,12 @@ body {
   padding: 15px;
 }
 .logo {
-  font-size: 40px;
+  font-size: 4rem;
   font-weight: bold;
   padding: 10px;
 }
 .lists-header {
-  font-size: 16px;
+  font-size: 2rem;
   padding: 10px;
   font-weight: bold;
 }
@@ -62,17 +65,104 @@ main {
   margin: 0 auto;
 }
 .todo-item-container {
-  border-bottom: 1px solid gray;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  margin-top: 20px;
 }
-.todo-item {
-  padding: 20px;
+.todo-details {
+  flex: 1;
+  width: 100%;
 }
-.button-container {
+.todo-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+.todo-header {
+  position: relative;
+  cursor: pointer;
+  padding-left: 1.5rem; /* room for chevron */
+}
+
+.todo-header::before {
+  content: "▶"; /* closed chevron */
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+  color: #777;
+}
+
+.todo-details[open] .todo-header::before {
+  transform: rotate(90deg); /* points down */
+}
+
+.todo-title {
+  font-weight: bold;
+  color: #777;
+}
+.todo-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 1.6rem;
+  color: #777;
+  margin-right: 20px;
+}
+.todo-priority {
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.todo-priority.low {
+  background-color: #e0f7e9;
+  color: #2e7d32;
+}
+
+.todo-priority.medium {
+  background-color: #fff9e6;
+  color: #f9a825;
+}
+
+.todo-priority.high {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+.todo-description {
+  font-size: 1.4rem;
+  color: #555;
+  padding: 12px;
+  margin-top: -30px;
+}
+
+.todo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+.action-btn {
+  background: none;
+  border: none;
+  color: #007aff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  text-align: right;
+}
+
+.action-btn:hover {
+  text-decoration: underline;
 }
 button {
   background-color: var(--accent);
@@ -91,6 +181,8 @@ button {
   padding: 20px;
   width: 400px;
   margin: 0 auto;
+  background-color: #fff;
+  z-index: 1000;
 }
 .modal h2 {
   margin-bottom: 20px;
@@ -104,7 +196,8 @@ button {
 .modal textarea,
 .modal input[type="date"],
 select,
-.modal-buttons input[type="button"] {
+.modal-buttons input[type="button"],
+.modal-buttons input[type="submit"] {
   border-style: solid;
   font-family: inherit;
   font-size: inherit;
@@ -144,8 +237,10 @@ form label {
   display: flex;
   justify-content: flex-end;
 }
-.modal-buttons input[type="button"] {
+.modal-buttons input[type="button"],
+.modal-buttons input[type="submit"] {
   font-family: inherit;
   margin-left: 20px;
   font-weight: bold;
+  cursor: pointer;
 }
