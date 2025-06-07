@@ -10,10 +10,10 @@ const addItemBtn = document.querySelector("[data-action='add']");
 
 /* initiate modules */
 const model = new Model();
+window.model = model; // allows me to test in browser console
 const view = new View({
   addButton: addItemBtn,
   todoItems: todoItemsDiv,
 });
 const controller = new Controller(model, view);
-
-//controller.init();
+window.controller = controller; // allows me to test in browser console
