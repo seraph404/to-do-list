@@ -23,6 +23,7 @@ export class Controller {
       this.validateInput({ id, title, description, dueDate, priority });
       this.model.addTodo({ id, title, description, dueDate, priority });
       this.view.closeModal();
+      this.view.displayNewTodo({ id, title, description, dueDate, priority });
     } catch (error) {
       console.error("Validation failed!", error);
     }
@@ -73,6 +74,7 @@ export class Controller {
 
   validatePriority(priority) {
     console.log("validating priority");
+    console.log(priority);
     const allowed = ["Low", "Medium", "High", "Unprioritized"];
     // throws error
     if (!allowed.includes(priority)) throw Error("Invalid priority");
