@@ -69,24 +69,22 @@ export class View {
     const formData = new FormData(this.form);
     return {
       title: formData.get("title"),
-      description: formData.get("description"),
       priority: formData.get("priority"),
       dueDate: formData.get("due-date"),
     };
   }
 
-  displayNewTodo({ id, title, description, priority, dueDate }) {
+  displayNewTodo({ id, title, priority, dueDate }) {
     console.log("Displaying new todo...");
 
     // elements
     const todoItemContainer = document.createElement("div");
-    const todoDetails = document.createElement("details");
-    const todoHeader = document.createElement("summary");
+    const todoDetails = document.createElement("div");
+    const todoHeader = document.createElement("div");
     const todoTitle = document.createElement("span");
     const todoMeta = document.createElement("div");
     const todoPriority = document.createElement("span");
     const todoDate = document.createElement("span");
-    const todoDescription = document.createElement("div");
     const todoActions = document.createElement("div");
     const editBtn = document.createElement("button");
     const deleteBtn = document.createElement("button");
@@ -106,14 +104,10 @@ export class View {
     if (dueDate) {
       todoDate.textContent = `Due: ${dueDate}`;
     }
-    todoDescription.classList.add("todo-description");
     todoActions.classList.add("todo-actions");
 
     // text
     todoTitle.textContent = title;
-    if (description) {
-      todoDescription.textContent = description;
-    }
 
     // buttons
     editBtn.classList.add("action-btn");
@@ -128,7 +122,6 @@ export class View {
     todoMeta.append(todoPriority, todoDate);
     todoHeader.append(todoTitle, todoMeta);
     todoDetails.append(todoHeader);
-    if (description) todoDetails.append(todoDescription);
     todoActions.append(editBtn, deleteBtn);
 
     todoItemContainer.append(todoDetails, todoActions);

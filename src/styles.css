@@ -89,21 +89,6 @@ main {
 .todo-header {
   position: relative;
   cursor: pointer;
-  padding-left: 1.5rem; /* room for chevron */
-}
-
-.todo-header::before {
-  content: "▶"; /* closed chevron */
-  position: absolute;
-  left: 0;
-  top: 0.3rem;
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-  color: #777;
-}
-
-.todo-details[open] .todo-header::before {
-  transform: rotate(90deg); /* points down */
 }
 
 .todo-title {
@@ -136,13 +121,6 @@ main {
 .todo-priority.high {
   background-color: #fdecea;
   color: #c62828;
-}
-
-.todo-description {
-  font-size: 1.4rem;
-  color: #555;
-  padding: 12px;
-  margin-top: -30px;
 }
 
 .todo-actions {

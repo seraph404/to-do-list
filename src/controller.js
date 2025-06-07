@@ -16,33 +16,33 @@ export class Controller {
     this.view.bindOnDelete(this.onDelete.bind(this));
   }
 
-  onAdd({ id, title, description, dueDate, priority }) {
+  onAdd({ id, title, dueDate, priority }) {
     id = this.generateId();
     try {
       id = this.generateId();
-      this.validateInput({ id, title, description, dueDate, priority });
-      this.model.addTodo({ id, title, description, dueDate, priority });
+      this.validateInput({ id, title, dueDate, priority });
+      this.model.addTodo({ id, title, dueDate, priority });
       this.view.closeModal();
-      this.view.displayNewTodo({ id, title, description, dueDate, priority });
+      this.view.displayNewTodo({ id, title, dueDate, priority });
     } catch (error) {
       console.error("Validation failed!", error);
     }
   }
 
-  onEdit({ id, title, description, dueDate, priority }) {
+  onEdit({ id, title, dueDate, priority }) {
     // check if to-do item exists
     if (this.todoExists(id)) {
       console.log("To-do exists! Proceed with editing.");
       // send directive to model
-      this.model.editTodo({ id, title, description, dueDate, priority });
+      this.model.editTodo({ id, title, dueDate, priority });
     }
   }
 
-  onDelete({ id, title, description, dueDate, priority }) {
+  onDelete({ id, title, dueDate, priority }) {
     if (this.todoExists(id)) {
       console.log("To-do exists! Proceed with deleting.");
       // send directive to model
-      this.model.deleteTodo({ id, title, description, dueDate, priority });
+      this.model.deleteTodo({ id, title, dueDate, priority });
     }
   }
 
