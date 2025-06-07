@@ -1,4 +1,5 @@
 import { View } from "./view.js";
+import { Model } from "./model.js";
 
 export class Controller {
   constructor(model, view) {
@@ -14,15 +15,29 @@ export class Controller {
     this.view.bindOnDelete(this.onDelete.bind(this));
   }
 
-  onAdd() {
-    console.log("Adding!");
+  onAdd({ id, title, description, dueDate, priority }) {
+    // send directive to model
+    this.model.addTodo({ id, title, description, dueDate, priority });
   }
 
-  onEdit() {
-    console.log("Editing!");
+  onEdit({ id, title, description, dueDate, priority }) {
+    // check if to-do item exists
+    if (this.todoExists(id)) {
+      console.log("To-do exists! Proceed with editing.");
+      // send directive to model
+      this.model.editTodo({ id, title, description, dueDate, priority });
+    }
   }
 
-  onDelete() {
-    console.log("Deleting!");
+  onDelete({ id, title, description, dueDate, priority }) {
+    if (this.todoExists(id)) {
+      console.log("To-do exists! Proceed with deleting.");
+      // send directive to model
+      this.model.deleteTodo({ id, title, description, dueDate, priority });
+    }
+  }
+
+  todoExists(id) {
+    return this.model.todoItems.some((todo) => todo.id === id);
   }
 }
