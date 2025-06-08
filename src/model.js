@@ -76,15 +76,15 @@ export class Model {
     console.log("Searching for match...");
 
     const match = this.todoItems.find((element) => {
-      console.log("match", element.id);
+      //console.log("match", element.id);
       return element.id === id;
     });
 
     if (match) {
-      console.log("Match found!");
-      console.log("Status:", match.status);
+      //console.log("Match found!");
+      //console.log("Status:", match.status);
     } else {
-      console.log("No match found for ID:", id);
+      //console.log("No match found for ID:", id);
     }
 
     return match;

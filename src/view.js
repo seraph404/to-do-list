@@ -1,20 +1,18 @@
 import { Controller } from "./controller.js";
 
 export class View {
-  constructor({ openModalBtn, todoItems, createTodoBtn, cancelTodoBtn }) {
+  constructor({ openModalBtn, todoItems, todoForm }) {
     this.openModalBtn = openModalBtn;
     this.todoItems = todoItems;
-    this.createTodoBtn = createTodoBtn;
-    this.cancelTodoBtn = cancelTodoBtn;
+    this.todoForm = todoForm;
     this.modal = document.querySelector(".modal");
-    this.form = this.modal.querySelector("#todo-form");
+    this.form = document.querySelector("#todo-form");
     this.handleClick = this.handleClick.bind(this);
 
     /* event listeners */
     this.openModalBtn.addEventListener("click", this.handleClick);
     this.todoItems.addEventListener("click", this.handleClick);
-    this.createTodoBtn.addEventListener("click", this.handleClick);
-    this.cancelTodoBtn.addEventListener("click", this.handleClick);
+    this.todoForm.addEventListener("click", this.handleClick);
   }
 
   bindOnAdd(handler) {
@@ -36,15 +34,16 @@ export class View {
   handleClick(event) {
     const target = event.target;
     const action = target.dataset.action;
+    const container = target.closest(".todo-item-container");
 
     if (action === "open-modal") {
       this.showModal();
-      //this.onAdd();
     } else if (action === "edit") {
-      this.onEdit();
+      this.onEdit({ id: container.dataset.id });
+      // then, show modal
+      this.showModal("edit");
     } else if (action === "delete") {
       console.log("View.js delete!");
-      const container = target.closest(".todo-item-container");
       this.onDelete({ id: container.dataset.id });
       // remove from DOM
       // but maybe check somehow that onDelete is successful before running it
@@ -56,6 +55,10 @@ export class View {
       this.onAdd(values);
       //this.resetForm();
       //this.closeModal();
+      // when the user is done editing and wants to submit
+    } else if (action === "edit-todo") {
+      event.preventDefault();
+      // put edit logic here
     } else if (action === "cancel-todo") {
       this.closeModal();
     } else if (action === "toggle-complete") {
@@ -65,13 +68,32 @@ export class View {
     }
   }
 
-  showModal() {
+  showModal(mode, todo) {
+    console.log(mode);
+    if (mode === "edit") {
+      console.log(this.form);
+      const h2 = this.form.querySelector("h2");
+      const button = this.form.querySelector(
+        ".modal-buttons > [data-action='create-todo']"
+      );
+      button.value = "Edit to-do";
+      button.dataset.action = "edit-todo";
+      h2.textContent = "Edit To-Do";
+    }
     this.modal.show();
   }
 
   closeModal() {
     this.resetForm();
     this.modal.close();
+  }
+
+  // populate "edit" form with existing content
+  populateEditForm(todo) {
+    const { title, priority, dueDate, id } = todo;
+    this.form.querySelector("[name='title']").value = title || "";
+    this.form.querySelector("[name='priority'").value = priority || "";
+    this.form.querySelector("[name='due-date'").value = dueDate || "";
   }
 
   resetForm() {

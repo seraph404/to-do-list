@@ -36,13 +36,23 @@ export class Controller {
     }
   }
 
-  onEdit({ id, title, dueDate, priority }) {
-    // check if to-do item exists
-    if (this.todoExists(id)) {
-      console.log("To-do exists! Proceed with editing.");
-      // send directive to model
-      this.model.editTodo({ id, title, dueDate, priority });
+  onEdit({ id }) {
+    const todo = this.model.getTodoFromId(id);
+    if (!todo) {
+      console.warn(`No todo found for ID: ${id}`);
+      return;
     }
+    this.view.populateEditForm(todo);
+    // check if to-do item exists
+    //if (this.todoExists(id)) {
+    //console.log("To-do exists! Proceed with editing.");
+    // send directive to model
+    //this.model.editTodo({ id, title, dueDate, priority });
+    //}
+  }
+
+  onConfirmEdit({ id, title, dueDate, priority }) {
+    console.log("Confirming edit...");
   }
 
   onDelete({ id }) {
