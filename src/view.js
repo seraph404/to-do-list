@@ -53,11 +53,10 @@ export class View {
       //this.closeModal();
     } else if (action === "cancel-todo") {
       this.closeModal();
-    } else if (action === "mark-complete") {
+    } else if (action === "toggle-complete") {
       const container = target.closest(".todo-item-container");
-      const title = container.querySelector(".todo-title");
       this.onCheck(container.dataset.id);
-      title.style.textDecoration = "line-through";
+      this.toggleStrikethrough(target, container);
     }
   }
 
@@ -100,7 +99,7 @@ export class View {
     const checkbox = document.createElement("input");
 
     checkbox.type = "checkbox";
-    checkbox.dataset.action = "mark-complete";
+    checkbox.dataset.action = "toggle-complete";
     // associate each item with a unique ID
     todoItemContainer.dataset.id = id;
 
@@ -143,5 +142,16 @@ export class View {
 
     todoItemContainer.append(todoDetails, todoActions);
     this.todoItems.append(todoItemContainer);
+  }
+
+  toggleStrikethrough(target, container) {
+    console.log("Strikethrough element:", target);
+    const title = container.querySelector(".todo-title");
+    // now do stuff as part of rendering
+    if (title.style.textDecoration === "line-through") {
+      title.style.textDecoration = "none";
+    } else {
+      title.style.textDecoration = "line-through";
+    }
   }
 } // class end

@@ -22,7 +22,13 @@ export class Controller {
     try {
       id = this.generateId();
       this.validateInput({ id, title, dueDate, priority });
-      this.model.addTodo({ id, title, dueDate, priority });
+      this.model.addTodo({
+        id,
+        title,
+        dueDate,
+        priority,
+        status: "Incomplete",
+      });
       this.view.closeModal();
       this.view.displayNewTodo({ id, title, dueDate, priority });
     } catch (error) {
@@ -48,7 +54,14 @@ export class Controller {
   }
 
   onCheck(id) {
-    console.log(`Item ${id} has been marked complete`);
+    const todo = this.model.getTodoFromId(id);
+    if (!todo) {
+      console.warn(`No todo found for ID: ${id}`);
+      return;
+    }
+
+    const newStatus = todo.status === "Complete" ? "Incomplete" : "Complete";
+    this.model.todoStatus = { id, status: newStatus };
   }
 
   todoExists(id) {

@@ -7,18 +7,19 @@ export class Model {
         id: "01a76d3c-223d-4320-ab05-a00f359e2148",
         priority: "High",
         title: "Go to the library",
+        status: "Incomplete",
       },
       {
         dueDate: "06-12-25",
         id: "01a76d3c-223d-4320-ab05-a00f359e2149",
         priority: "Medium",
         title: "Clean out the fridge",
+        status: "Complete",
       },
     ];
   }
 
-  addTodo({ title, dueDate, priority, status }) {
-    const id = crypto.randomUUID();
+  addTodo({ id, title, dueDate, priority, status }) {
     this.status = "Incomplete";
     const newTodo = new TodoItem({
       id: id,
@@ -42,10 +43,39 @@ export class Model {
   get todoItems() {
     return this.todos;
   }
+
+  set todoStatus({ id, status }) {
+    const todo = this.getTodoFromId(id);
+    console.log("Looking for status...");
+    if (todo) {
+      todo.status = status;
+      console.log(`Todo ${id} status updated to ${status}`);
+    } else {
+      console.warn(`Todo with ID ${id} not found.`);
+    }
+  }
+
+  getTodoFromId(id) {
+    console.log("Searching for match...");
+
+    const match = this.todoItems.find((element) => {
+      console.log("match", element.id);
+      return element.id === id; // ← this is the key part
+    });
+
+    if (match) {
+      console.log("Match found!");
+      console.log("Status:", match.status);
+    } else {
+      console.log("No match found for ID:", id);
+    }
+
+    return match; // ← this is what makes the function return the todo
+  }
 }
 
 export class TodoItem {
-  constructor({ id, title, dueDate, priority, status }) {
+  constructor({ id, title, dueDate, priority, status = "Incomplete" }) {
     this.id = id;
     this.title = title;
     this.dueDate = dueDate;
