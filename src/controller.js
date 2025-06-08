@@ -45,12 +45,9 @@ export class Controller {
     }
   }
 
-  onDelete({ id, title, dueDate, priority }) {
-    if (this.todoExists(id)) {
-      console.log("To-do exists! Proceed with deleting.");
-      // send directive to model
-      this.model.deleteTodo({ id, title, dueDate, priority });
-    }
+  onDelete({ id }) {
+    console.log("onDelete, Controller.js");
+    this.model.deleteTodo({ id });
   }
 
   onCheck(id) {

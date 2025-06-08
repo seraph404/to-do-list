@@ -43,7 +43,12 @@ export class View {
     } else if (action === "edit") {
       this.onEdit();
     } else if (action === "delete") {
-      this.onDelete();
+      console.log("View.js delete!");
+      const container = target.closest(".todo-item-container");
+      this.onDelete({ id: container.dataset.id });
+      // remove from DOM
+      // but maybe check somehow that onDelete is successful before running it
+      container.remove();
     } else if (action === "create-todo") {
       // get values from todo form
       event.preventDefault();
@@ -145,9 +150,8 @@ export class View {
   }
 
   toggleStrikethrough(target, container) {
-    console.log("Strikethrough element:", target);
     const title = container.querySelector(".todo-title");
-    // now do stuff as part of rendering
+
     if (title.style.textDecoration === "line-through") {
       title.style.textDecoration = "none";
     } else {

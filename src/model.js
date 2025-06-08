@@ -36,8 +36,25 @@ export class Model {
     console.log("Proceed with editing.");
   }
 
-  deleteTodo({ id, title, dueDate, priority }) {
-    console.log("Proceed with deletion.");
+  deleteTodo({ id }) {
+    console.log(
+      "Before deletion:",
+      this.todos.map((todo) => todo.id)
+    );
+    console.log("Deleting todo with ID:", id);
+
+    this.todos = this.todos.filter((todo) => {
+      const todoId = String(todo.id).trim();
+      const targetId = String(id).trim();
+      const keep = todoId !== targetId;
+      console.log(`Compare: ${todoId} !== ${targetId} → ${keep}`);
+      return keep;
+    });
+
+    console.log(
+      "After deletion:",
+      this.todos.map((todo) => todo.id)
+    );
   }
 
   get todoItems() {
@@ -60,7 +77,7 @@ export class Model {
 
     const match = this.todoItems.find((element) => {
       console.log("match", element.id);
-      return element.id === id; // ← this is the key part
+      return element.id === id;
     });
 
     if (match) {
@@ -70,7 +87,7 @@ export class Model {
       console.log("No match found for ID:", id);
     }
 
-    return match; // ← this is what makes the function return the todo
+    return match;
   }
 }
 
