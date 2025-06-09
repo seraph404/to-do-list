@@ -71,13 +71,11 @@ export class View {
         this.replaceTodo(result.todo);
         this.closeModal();
       }
-      // put edit logic here
     } else if (action === "delete") {
-      console.log("View.js delete!");
-      this.onDelete({ id: container.dataset.id });
-      // remove from DOM
-      // but maybe check somehow that onDelete is successful before running it
-      container.remove();
+      const result = this.onDelete({ id: container.dataset.id });
+      if (result.success) {
+        this.removeTodo(result.id);
+      }
     } else if (action === "cancel-todo") {
       this.closeModal();
     } else if (action === "toggle-complete") {
@@ -87,17 +85,10 @@ export class View {
     }
   }
 
-  showModal(mode, todo) {
+  showModal(mode) {
     console.log(mode);
     if (mode === "edit") {
-      console.log(this.form);
-      const h2 = this.form.querySelector("h2");
-      const button = this.form.querySelector(
-        ".modal-buttons > [data-action='create-todo']"
-      );
-      button.value = "Edit to-do";
-      button.dataset.action = "edit-todo";
-      h2.textContent = "Edit To-Do";
+      this.configureEditModal();
     }
     this.modal.show();
   }
@@ -105,6 +96,16 @@ export class View {
   closeModal() {
     this.resetForm();
     this.modal.close();
+  }
+
+  configureEditModal() {
+    const h2 = this.form.querySelector("h2");
+    const button = this.form.querySelector(
+      ".modal-buttons > [data-action='create-todo']"
+    );
+    button.value = "Edit to-do";
+    button.dataset.action = "edit-todo";
+    h2.textContent = "Edit To-Do";
   }
 
   // populate "edit" form with existing content
@@ -127,6 +128,7 @@ export class View {
       dueDate: formData.get("due-date"),
     };
   }
+
   // creates all of the DOM stuff needed for an item
   displayNewTodo({ id, title, priority, dueDate }) {
     // elements
@@ -212,6 +214,7 @@ export class View {
       title.style.textDecoration = "line-through";
     }
   }
+
   removeTodo(id) {
     const toRemove = document.querySelector(`[data-id='${id}']`);
     toRemove.remove();
