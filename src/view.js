@@ -18,7 +18,7 @@ export class View {
     this.todoForm.addEventListener("click", this.handleClick);
   }
 
-  // these help to bind the click handler to controller methods
+  // ========== Event Binding ========== //
 
   bindOnAdd(handler) {
     this.onAdd = handler;
@@ -40,50 +40,89 @@ export class View {
     this.onCheck = handler;
   }
 
-  // I probably need to do something about this at some point (it's so long / messy)
+  // ========== Event Handlers ========== //
+
   handleClick(event) {
     const target = event.target;
     const action = target.dataset.action;
     const container = target.closest(".todo-item-container");
 
-    if (action === "open-modal") {
-      this.showModal();
-    } else if (action === "create-todo") {
-      event.preventDefault();
-      const result = this.onAdd(this.getFormValues());
-      if (result.success) {
-        this.resetForm();
-        this.closeModal();
-        this.appendNewTodo(result.todo);
-      }
-    } else if (action === "edit") {
-      this.currentEditingId = container.dataset.id;
-      const result = this.onEditStart({ id: container.dataset.id });
-      this.showModal("edit");
-      if (result.success) {
-        this.populateEditForm(result.todo);
-      }
-    } else if (action === "edit-todo") {
-      event.preventDefault();
-      const values = this.getFormValues();
-      const result = this.onEditSubmit(values, this.currentEditingId);
-      if (result.success) {
-        this.replaceTodo(result.todo);
-        this.closeModal();
-      }
-    } else if (action === "delete") {
-      const result = this.onDelete({ id: container.dataset.id });
-      if (result.success) {
-        this.removeTodo(result.id);
-      }
-    } else if (action === "cancel-todo") {
-      this.closeModal();
-    } else if (action === "toggle-complete") {
-      const container = target.closest(".todo-item-container");
-      this.onCheck(container.dataset.id);
-      this.toggleStrikethrough(target, container);
+    switch (action) {
+      case "open-create-todo":
+        this.handleOpenCreateModal();
+        break;
+      case "submit-create-todo":
+        this.handleCreateTodo(event);
+        break;
+      case "open-edit-todo":
+        this.handleOpenEditModal(container);
+        break;
+      case "submit-edit-todo":
+        this.handleEditSubmit(event);
+        break;
+      case "delete-todo":
+        this.handleDeleteTodo(container);
+        break;
+      case "dismiss-todo-modal":
+        this.handleCancelModal();
+        break;
+      case "toggle-complete":
+        this.handleToggleComplete(container);
+        break;
     }
   }
+
+  handleOpenCreateModal() {
+    this.showModal();
+  }
+
+  handleCreateTodo(event) {
+    event.preventDefault();
+    const result = this.onAdd(this.getFormValues());
+    if (result.success) {
+      this.resetForm();
+      this.closeModal();
+      this.appendNewTodo(result.todo);
+    }
+  }
+
+  handleOpenEditModal(container) {
+    console.log("click");
+    this.currentEditingId = container.dataset.id;
+    const result = this.onEditStart({ id: container.dataset.id });
+    this.showModal("edit");
+    if (result.success) {
+      this.populateEditForm(result.todo);
+    }
+  }
+
+  handleEditSubmit(event) {
+    event.preventDefault();
+    const values = this.getFormValues();
+    const result = this.onEditSubmit(values, this.currentEditingId);
+    if (result.success) {
+      this.replaceTodo(result.todo);
+      this.closeModal();
+    }
+  }
+
+  handleDeleteTodo(container) {
+    const result = this.onDelete({ id: container.dataset.id });
+    if (result.success) {
+      this.removeTodo(result.id);
+    }
+  }
+
+  handleCancelModal() {
+    this.closeModal();
+  }
+
+  handleToggleComplete(container) {
+    this.onCheck(container.dataset.id);
+    this.toggleStrikethrough(target, container);
+  }
+
+  // ========== Modal Controls ========== //
 
   showModal(mode) {
     console.log(mode);
@@ -101,12 +140,14 @@ export class View {
   configureEditModal() {
     const h2 = this.form.querySelector("h2");
     const button = this.form.querySelector(
-      ".modal-buttons > [data-action='create-todo']"
+      ".modal-buttons > [data-action='submit-create-todo']"
     );
     button.value = "Edit to-do";
-    button.dataset.action = "edit-todo";
+    button.dataset.action = "submit-edit-todo";
     h2.textContent = "Edit To-Do";
   }
+
+  // ========== Form Handling ========== //
 
   // populate "edit" form with existing content
   populateEditForm(todo) {
@@ -128,6 +169,8 @@ export class View {
       dueDate: formData.get("due-date"),
     };
   }
+
+  // ========== Todo Rendering ========== //
 
   // creates all of the DOM stuff needed for an item
   displayNewTodo({ id, title, priority, dueDate }) {
@@ -172,11 +215,11 @@ export class View {
 
     // buttons
     editBtn.classList.add("action-btn");
-    editBtn.setAttribute("data-action", "edit");
+    editBtn.setAttribute("data-action", "open-edit-todo");
     editBtn.textContent = "Edit";
 
     deleteBtn.classList.add("action-btn");
-    deleteBtn.setAttribute("data-action", "delete");
+    deleteBtn.setAttribute("data-action", "delete-todo");
     deleteBtn.textContent = "Delete";
 
     // appends

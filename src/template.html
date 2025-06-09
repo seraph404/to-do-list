@@ -40,9 +40,13 @@
               </div>
             </div>
             <div class="modal-buttons">
-              <input data-action="cancel-todo" type="button" value="Cancel" />
               <input
-                data-action="create-todo"
+                data-action="dismiss-todo-modal"
+                type="button"
+                value="Cancel"
+              />
+              <input
+                data-action="submit-create-todo"
                 type="submit"
                 value="Create to-do"
               />
@@ -50,7 +54,9 @@
           </form>
         </dialog>
         <div class="button-container">
-          <button data-action="open-modal" type="button">+ Add new item</button>
+          <button data-action="open-create-todo" type="button">
+            + Add new item
+          </button>
         </div>
         <div class="todo-items"></div>
       </main>
