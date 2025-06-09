@@ -54,13 +54,13 @@ export class Controller {
     const todo = { id, title, dueDate, priority };
     this.model.editTodo({ id, title, dueDate, priority });
     return { success: true, todo };
-    //this.view.displayNewTodo({ id, title, dueDate, priority });
-    //this.view.removeTodo(id);
   }
 
   onDelete({ id }) {
-    console.log("onDelete, Controller.js");
-    this.model.deleteTodo({ id });
+    if (this.todoExists(id)) {
+      this.model.deleteTodo({ id });
+    }
+    return { success: true, id };
   }
 
   onCheck(id) {

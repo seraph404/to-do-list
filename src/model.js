@@ -29,7 +29,6 @@ export class Model {
       status: status,
     });
     this.todos.push(newTodo);
-    console.log(this.todos);
   }
 
   editTodo({ id, title, dueDate, priority }) {
