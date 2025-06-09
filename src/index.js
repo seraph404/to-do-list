@@ -19,3 +19,5 @@ const view = new View({
 });
 const controller = new Controller(model, view);
 window.controller = controller; // allows me to test in browser console
+
+controller.initializeApp();

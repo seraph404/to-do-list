@@ -197,4 +197,17 @@ export class View {
     const toRemove = document.querySelector(`[data-id='${id}']`);
     toRemove.remove();
   }
+
+  displayExistingTodos(todos) {
+    console.log("Displaying todos...");
+    todos.forEach((todo) => {
+      this.displayNewTodo({
+        id: todo.id,
+        title: todo.title,
+        priority: todo.priority,
+        dueDate: todo.dueDate,
+        status: todo.status,
+      });
+    });
+  }
 } // class end

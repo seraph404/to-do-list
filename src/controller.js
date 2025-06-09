@@ -119,4 +119,9 @@ export class Controller {
     }
     return true;
   }
+
+  initializeApp() {
+    const todos = this.model.todoItems;
+    this.view.displayExistingTodos(todos);
+  }
 }
