@@ -126,8 +126,9 @@ export class View {
   showModal(mode) {
     console.log(mode);
     if (mode === "edit") {
-      this.modal.show();
       this.configureEditModal();
+    } else {
+      this.configureCreateModal();
     }
     this.modal.show();
   }
@@ -143,6 +144,14 @@ export class View {
     button.value = "Edit to-do";
     button.dataset.action = "submit-edit-todo";
     h2.textContent = "Edit To-Do";
+  }
+
+  configureCreateModal() {
+    const h2 = this.form.querySelector("h2");
+    const button = this.form.querySelector("#submit-modal");
+    button.value = "Create to-do";
+    button.dataset.action = "submit-create-todo";
+    h2.textContent = "Create To-Do";
   }
 
   // ========== Form Handling ========== //
