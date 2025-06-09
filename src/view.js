@@ -87,7 +87,6 @@ export class View {
   }
 
   handleOpenEditModal(container) {
-    console.log("click");
     this.currentEditingId = container.dataset.id;
     const result = this.onEditStart({ id: container.dataset.id });
     this.showModal("edit");
@@ -127,6 +126,7 @@ export class View {
   showModal(mode) {
     console.log(mode);
     if (mode === "edit") {
+      this.modal.show();
       this.configureEditModal();
     }
     this.modal.show();
@@ -136,12 +136,10 @@ export class View {
     this.resetForm();
     this.modal.close();
   }
-
+  // should only run once the modal appears
   configureEditModal() {
     const h2 = this.form.querySelector("h2");
-    const button = this.form.querySelector(
-      ".modal-buttons > [data-action='submit-create-todo']"
-    );
+    const button = this.form.querySelector("#submit-modal");
     button.value = "Edit to-do";
     button.dataset.action = "submit-edit-todo";
     h2.textContent = "Edit To-Do";
