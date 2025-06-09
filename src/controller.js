@@ -12,16 +12,19 @@ export class Controller {
   // this makes the following methods available to 'View'
   registerViewEvents() {
     this.view.bindOnAdd(this.onAdd.bind(this));
-    this.view.bindOnEdit(this.onEdit.bind(this));
+    this.view.bindOnEditStart(this.onEditStart.bind(this));
+    this.view.bindOnEditSubmit(this.onEditSubmit.bind(this));
     this.view.bindOnDelete(this.onDelete.bind(this));
     this.view.bindOnCheck(this.onCheck.bind(this));
   }
 
   onAdd({ id, title, dueDate, priority }) {
-    id = this.generateId();
     try {
+      // generate a unique ID for this item
       id = this.generateId();
+      // ensure the input is valid
       this.validateInput({ id, title, dueDate, priority });
+      // tell model to add to todo object
       this.model.addTodo({
         id,
         title,
@@ -29,14 +32,15 @@ export class Controller {
         priority,
         status: "Incomplete",
       });
-      this.view.closeModal();
-      this.view.displayNewTodo({ id, title, dueDate, priority });
+      const todo = { id, title, dueDate, priority };
+      // return success value, plus the individual todo
+      return { success: true, todo };
     } catch (error) {
       console.error("Validation failed!", error);
     }
   }
 
-  onEdit({ id }) {
+  onEditStart({ id }) {
     const todo = this.model.getTodoFromId(id);
     if (!todo) {
       console.warn(`No todo found for ID: ${id}`);
@@ -51,8 +55,12 @@ export class Controller {
     //}
   }
 
-  onConfirmEdit({ id, title, dueDate, priority }) {
-    console.log("Confirming edit...");
+  onEditSubmit({ title, dueDate, priority }, id) {
+    console.log(`ID being edited: ${id}`);
+    this.validateInput({ title, dueDate, priority });
+    this.model.editTodo({ id, title, dueDate, priority });
+    this.view.displayNewTodo({ id, title, dueDate, priority });
+    this.view.removeTodo(id);
   }
 
   onDelete({ id }) {
@@ -80,8 +88,6 @@ export class Controller {
   }
 
   validateInput({ title, priority, dueDate }) {
-    //console.log(`Form data is: ${formData}`);
-    console.log("Validating...");
     return {
       title: this.validateTitle(title),
       priority: this.validatePriority(priority),
@@ -98,12 +104,10 @@ export class Controller {
   }
 
   validatePriority(priority) {
-    console.log("validating priority");
-    console.log(priority);
     const allowed = ["Low", "Medium", "High", "Unprioritized"];
-    // throws error
-    if (!allowed.includes(priority)) throw Error("Invalid priority");
-    // if valid
+    if (!allowed.includes(priority)) {
+      throw Error("Invalid priority");
+    }
     return true;
   }
 

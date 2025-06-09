@@ -33,7 +33,22 @@ export class Model {
   }
 
   editTodo({ id, title, dueDate, priority }) {
-    console.log("Proceed with editing.");
+    const todo = this.getTodoFromId(id);
+    console.log("Todo before editing:", todo);
+    // check if field needs to be changed, then change it
+    if (todo.title !== title) {
+      todo.title = title;
+    }
+
+    if (todo.dueDate !== dueDate) {
+      todo.dueDate = dueDate;
+    }
+
+    if (todo.priority !== priority) {
+      todo.priority = priority;
+    }
+
+    console.log("Todo after editing:", todo);
   }
 
   deleteTodo({ id }) {
@@ -76,15 +91,15 @@ export class Model {
     console.log("Searching for match...");
 
     const match = this.todoItems.find((element) => {
-      //console.log("match", element.id);
+      console.log("match", element.id);
       return element.id === id;
     });
 
     if (match) {
-      //console.log("Match found!");
-      //console.log("Status:", match.status);
+      console.log("Match found!");
+      console.log("Status:", match.status);
     } else {
-      //console.log("No match found for ID:", id);
+      console.log("No match found for ID:", id);
     }
 
     return match;

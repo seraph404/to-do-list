@@ -1,26 +1,35 @@
 import { Controller } from "./controller.js";
 
 export class View {
+  // the constructor arguments are items being passed in from index.js
   constructor({ openModalBtn, todoItems, todoForm }) {
     this.openModalBtn = openModalBtn;
     this.todoItems = todoItems;
     this.todoForm = todoForm;
+    // these are "global" variables needed by the entire module
     this.modal = document.querySelector(".modal");
     this.form = document.querySelector("#todo-form");
     this.handleClick = this.handleClick.bind(this);
+    this.currentEditingId = null;
 
-    /* event listeners */
+    // these are event listeners
     this.openModalBtn.addEventListener("click", this.handleClick);
     this.todoItems.addEventListener("click", this.handleClick);
     this.todoForm.addEventListener("click", this.handleClick);
   }
 
+  // these help to bind the click handler to controller methods
+
   bindOnAdd(handler) {
     this.onAdd = handler;
   }
 
-  bindOnEdit(handler) {
-    this.onEdit = handler;
+  bindOnEditStart(handler) {
+    this.onEditStart = handler;
+  }
+
+  bindOnEditSubmit(handler) {
+    this.onEditSubmit = handler;
   }
 
   bindOnDelete(handler) {
@@ -31,6 +40,7 @@ export class View {
     this.onCheck = handler;
   }
 
+  // I probably need to do something about this at some point (it's so long / messy)
   handleClick(event) {
     const target = event.target;
     const action = target.dataset.action;
@@ -39,7 +49,9 @@ export class View {
     if (action === "open-modal") {
       this.showModal();
     } else if (action === "edit") {
-      this.onEdit({ id: container.dataset.id });
+      this.currentEditingId = container.dataset.id;
+      this.onEditStart({ id: container.dataset.id });
+
       // then, show modal
       this.showModal("edit");
     } else if (action === "delete") {
@@ -49,15 +61,19 @@ export class View {
       // but maybe check somehow that onDelete is successful before running it
       container.remove();
     } else if (action === "create-todo") {
-      // get values from todo form
       event.preventDefault();
-      const values = this.getFormValues();
-      this.onAdd(values);
-      //this.resetForm();
-      //this.closeModal();
-      // when the user is done editing and wants to submit
+      const result = this.onAdd(this.getFormValues());
+      if (result.success) {
+        this.resetForm();
+        this.closeModal();
+        this.displayNewTodo(result.todo);
+      }
     } else if (action === "edit-todo") {
       event.preventDefault();
+      const values = this.getFormValues();
+      this.onEditSubmit(values, this.currentEditingId);
+      // close modal
+      this.closeModal();
       // put edit logic here
     } else if (action === "cancel-todo") {
       this.closeModal();
@@ -110,8 +126,6 @@ export class View {
   }
 
   displayNewTodo({ id, title, priority, dueDate }) {
-    console.log("Displaying new todo...");
-
     // elements
     const todoItemContainer = document.createElement("div");
     const todoDetails = document.createElement("div");
@@ -166,7 +180,6 @@ export class View {
     todoHeader.append(todoTitle, todoMeta);
     todoDetails.append(todoHeader);
     todoActions.append(editBtn, deleteBtn);
-
     todoItemContainer.append(todoDetails, todoActions);
     this.todoItems.append(todoItemContainer);
   }
@@ -179,5 +192,9 @@ export class View {
     } else {
       title.style.textDecoration = "line-through";
     }
+  }
+  removeTodo(id) {
+    const toRemove = document.querySelector(`[data-id='${id}']`);
+    toRemove.remove();
   }
 } // class end
