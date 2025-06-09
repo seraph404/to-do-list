@@ -48,33 +48,36 @@ export class View {
 
     if (action === "open-modal") {
       this.showModal();
-    } else if (action === "edit") {
-      this.currentEditingId = container.dataset.id;
-      this.onEditStart({ id: container.dataset.id });
-
-      // then, show modal
-      this.showModal("edit");
-    } else if (action === "delete") {
-      console.log("View.js delete!");
-      this.onDelete({ id: container.dataset.id });
-      // remove from DOM
-      // but maybe check somehow that onDelete is successful before running it
-      container.remove();
     } else if (action === "create-todo") {
       event.preventDefault();
       const result = this.onAdd(this.getFormValues());
       if (result.success) {
         this.resetForm();
         this.closeModal();
-        this.displayNewTodo(result.todo);
+        this.appendNewTodo(result.todo);
+      }
+    } else if (action === "edit") {
+      this.currentEditingId = container.dataset.id;
+      const result = this.onEditStart({ id: container.dataset.id });
+      this.showModal("edit");
+      if (result.success) {
+        this.populateEditForm(result.todo);
       }
     } else if (action === "edit-todo") {
       event.preventDefault();
       const values = this.getFormValues();
-      this.onEditSubmit(values, this.currentEditingId);
-      // close modal
-      this.closeModal();
+      const result = this.onEditSubmit(values, this.currentEditingId);
+      if (result.success) {
+        this.replaceTodo(result.todo);
+        this.closeModal();
+      }
       // put edit logic here
+    } else if (action === "delete") {
+      console.log("View.js delete!");
+      this.onDelete({ id: container.dataset.id });
+      // remove from DOM
+      // but maybe check somehow that onDelete is successful before running it
+      container.remove();
     } else if (action === "cancel-todo") {
       this.closeModal();
     } else if (action === "toggle-complete") {
@@ -124,7 +127,7 @@ export class View {
       dueDate: formData.get("due-date"),
     };
   }
-
+  // creates all of the DOM stuff needed for an item
   displayNewTodo({ id, title, priority, dueDate }) {
     // elements
     const todoItemContainer = document.createElement("div");
@@ -181,7 +184,23 @@ export class View {
     todoDetails.append(todoHeader);
     todoActions.append(editBtn, deleteBtn);
     todoItemContainer.append(todoDetails, todoActions);
-    this.todoItems.append(todoItemContainer);
+
+    return todoItemContainer;
+  }
+
+  // appends to the end of the list
+  appendNewTodo({ id, title, priority, dueDate }) {
+    this.todoItems.append(
+      this.displayNewTodo({ id, title, priority, dueDate })
+    );
+  }
+
+  replaceTodo({ id, title, priority, dueDate }) {
+    const oldNode = this.todoItems.querySelector(`[data-id="${id}"]`);
+    if (oldNode) {
+      const newNode = this.displayNewTodo({ id, title, priority, dueDate });
+      this.todoItems.replaceChild(newNode, oldNode);
+    }
   }
 
   toggleStrikethrough(target, container) {
@@ -201,7 +220,7 @@ export class View {
   displayExistingTodos(todos) {
     console.log("Displaying todos...");
     todos.forEach((todo) => {
-      this.displayNewTodo({
+      this.appendNewTodo({
         id: todo.id,
         title: todo.title,
         priority: todo.priority,
