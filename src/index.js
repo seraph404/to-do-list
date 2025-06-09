@@ -6,7 +6,7 @@ import { Controller } from "./controller.js";
 
 /* DOM elements */
 const todoItemsDiv = document.querySelector(".todo-items");
-const openModalBtn = document.querySelector("[data-action='open-modal']");
+const openModalBtn = document.querySelector("[data-action='open-create-todo']");
 const todoForm = document.querySelector("#todo-form");
 
 /* initiate modules */
