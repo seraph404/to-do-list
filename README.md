@@ -87,6 +87,22 @@ I don't expect these to be perfect - but they at least give me something to star
   - The View triggers the deletion request and passes it to the Controller. The Controller handles the confirmation response and, if confirmed, updates the Model, which then deletes the to-do item from the to-do object.
   - The View gets the updated to-do list object from the Model and renders it to the page.
 
-## Planning
+## Headwinds
 
-For my next step, I started building out `model.js`, `view.js` and `controller.js` which ended up being a lot more complicated than I anticipated (and I was already expecting it to be complicated). Because I wanted to hook up my event listeners right away to the main action buttons on my UI, I had to learn about defining DOM elements in the main entry point (in my case that's `index.js`) and passing them in to View. I also learned (but don't yet fully comprehend) how you need to do a bunch of strange binding stuff to get the View to be able to communicate nicely with the Controller.
+- Using MVC architecture for this app was probably overkill and deeply overcomplicated this process, despite it being a good learning experience. If I could do it all over, I would have chosen a different way to separate out my logic which didn't involve switching between 3-4 different module files.
+- The UI became a pretty big stumbling block because I didn't do the due diligence of completely designing and building out a functionally complete UI from the beginning. I did a simple design that was missing a ton of features thinking that I could build it out as I continued to work. This didn't pan out. I had to stop what I was doing, complete the frontend design, and then rework my View model to ensure it followed the new structure.
+- Despite all of the planning I did, I feel like I still jumped into things too early without fully working out the logic.
+- I feel the least badly about this one - I overestimated the development effort of the simplest features and in my initial scope planning, I think I went a little overboard. I think this is something that will improve over time as I become more familiar with writing code for certain workflows and have experience knowing the effort associated with them.
+
+## Highlights
+
+I had a particularly exciting revelation about how `return` values aren't just about outputting a result, but can be used to communicate useful information back to the caller. I already knew how to define retur values but I didn't fully grasp how powerful they are in structuring code, especially across modules. While working on my Controller, I changed my approach to return an object containing: (1) a `success` boolean to indicate whether the operation worked, and (2) a `todo` item or `id` needed by the View. Then, in the view, I assigned the result to a variable:
+
+```javascript
+const result = this.onAdd(formValues);
+if (result.success) {
+  this.displayNewTodo(result.todo);
+}
+```
+
+This let me both run the Controller method and preserve its response, giving the View just enough information to do its job. It's a simple idea, but it made something click inside of my head.
