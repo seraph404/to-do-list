@@ -45,7 +45,8 @@ body {
 }
 .header h1 {
   padding: 50px;
-  padding-top: 20px;
+  padding-top: 25px;
+  font-size: 6rem;
 }
 main {
   grid-area: main;
