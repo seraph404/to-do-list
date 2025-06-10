@@ -145,7 +145,14 @@ export class Controller {
   validateDueDate(dueDate) {
     // TODO: Disallow users to set a due date that is in the past.
     if (!dueDate) return true;
+
     const date = new Date(dueDate);
+    const currentDate = new Date();
+    if (date < currentDate) {
+      throw Error("Due date can't be before current date.");
+      // TODO: Make this.view.showValidationError for user-facing errors
+    }
+
     if (isNaN(date.getTime())) {
       throw Error("Invalid due date.");
     }
