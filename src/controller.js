@@ -21,24 +21,22 @@ export class Controller {
 
   onAdd({ title, dueDate, priority }) {
     try {
-      // generate a unique ID for this item
-      const id = this.generateId();
-      // ensure the input is valid
-      this.validateInput({ id, title, dueDate, priority });
-      // tell model to add to todo object
-      this.model.addTodo({
-        id,
-        title,
-        dueDate,
-        priority,
-        status: "Incomplete",
-      });
-      const todo = { id, title, dueDate, priority };
+      this.validateInput({ title, dueDate, priority });
+    } catch (error) {
+      // TODO: Make this.view.showValidationError for user-facing errors
+      console.error("Validation failed!", error);
+    }
+
+    const result = this.model.addTodo({
+      title,
+      dueDate,
+      priority,
+    });
+
+    if (result.success) {
       this.view.resetForm();
       this.view.closeModal();
-      this.view.appendNewTodo(todo);
-    } catch (error) {
-      console.error("Validation failed!", error);
+      this.view.appendNewTodo(result.todo);
     }
   }
 
@@ -82,10 +80,6 @@ export class Controller {
 
   todoExists(id) {
     return this.model.todoItems.some((todo) => todo.id === id);
-  }
-
-  generateId() {
-    return crypto.randomUUID();
   }
 
   validateInput({ title, priority, dueDate }) {
