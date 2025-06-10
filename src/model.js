@@ -1,22 +1,7 @@
 export class Model {
   constructor() {
     // some dummy data for testing purposes
-    this.todos = [
-      {
-        dueDate: "2025-07-25",
-        id: "01a76d3c-223d-4320-ab05-a00f359e2148",
-        priority: "High",
-        title: "Go to the library",
-        status: "Incomplete",
-      },
-      {
-        dueDate: "2025-06-14",
-        id: "01a76d3c-223d-4320-ab05-a00f359e2149",
-        priority: "Medium",
-        title: "Clean out the fridge",
-        status: "Complete",
-      },
-    ];
+    this.todos = [];
   }
 
   addTodo({ title, dueDate, priority }) {
@@ -26,6 +11,7 @@ export class Model {
       priority: priority,
     });
     this.todos.push(todoItem);
+    this.saveTodos();
     return { success: true, todo: todoItem };
   }
 
@@ -49,6 +35,7 @@ export class Model {
       todoItem.status = status;
     }
     console.log("After edit:", todoItem);
+    this.saveTodos();
     return { success: true, todo: todoItem };
   }
 
@@ -60,6 +47,7 @@ export class Model {
       console.log(`Compare: ${todoId} !== ${targetId} → ${keep}`);
       return keep;
     });
+    this.saveTodos();
   }
 
   get todoItems() {
@@ -72,6 +60,7 @@ export class Model {
       const oldStatus = todo.status;
       todo.status = status;
       console.log(`Todo status changed from ${oldStatus} to ${status}`);
+      this.saveTodos();
     } else {
       console.warn(`Todo with ID ${id} not found.`);
     }
@@ -98,6 +87,18 @@ export class Model {
     }
 
     return match;
+  }
+
+  saveTodos() {
+    localStorage.setItem("todos", JSON.stringify(this.todos));
+  }
+
+  loadTodos() {
+    console.log("Loading from local storage");
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      this.todos = JSON.parse(storedTodos);
+    }
   }
 }
 

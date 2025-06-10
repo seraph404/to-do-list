@@ -143,6 +143,7 @@ export class Controller {
   }
 
   validateDueDate(dueDate) {
+    // TODO: Disallow users to set a due date that is in the past.
     if (!dueDate) return true;
     const date = new Date(dueDate);
     if (isNaN(date.getTime())) {
@@ -152,6 +153,7 @@ export class Controller {
   }
 
   initializeApp() {
+    this.model.loadTodos();
     const todos = this.model.todoItems;
     this.view.displayExistingTodos(todos);
   }
