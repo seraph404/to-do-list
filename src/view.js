@@ -10,7 +10,6 @@ export class View {
     this.modal = document.querySelector(".modal");
     this.form = document.querySelector("#todo-form");
     this.handleClick = this.handleClick.bind(this);
-    this.currentEditingId = null;
 
     // these are event listeners
     this.openModalBtn.addEventListener("click", this.handleClick);
@@ -49,74 +48,59 @@ export class View {
 
     switch (action) {
       case "open-create-todo":
-        this.handleOpenCreateModal();
+        this.onOpenCreateModal();
         break;
       case "submit-create-todo":
-        this.handleCreateTodo(event);
+        this.onCreateSubmit(event);
         break;
       case "open-edit-todo":
-        this.handleOpenEditModal(container);
+        this.onOpenEditModal(container);
         break;
       case "submit-edit-todo":
-        this.handleEditSubmit(event);
+        this.onEdit(event);
         break;
       case "delete-todo":
-        this.handleDeleteTodo(container);
+        this.onDeleteTodo(container);
         break;
       case "dismiss-todo-modal":
-        this.handleCancelModal();
+        this.onCancelModal();
         break;
       case "toggle-complete":
-        this.handleToggleComplete(container);
+        this.onToggleComplete(container);
         break;
     }
   }
 
-  handleOpenCreateModal() {
+  onOpenCreateModal() {
     this.showModal();
   }
 
-  handleCreateTodo(event) {
-    event.preventDefault();
-    const result = this.onAdd(this.getFormValues());
-    if (result.success) {
-      this.resetForm();
-      this.closeModal();
-      this.appendNewTodo(result.todo);
-    }
-  }
-
-  handleOpenEditModal(container) {
-    this.currentEditingId = container.dataset.id;
-    const result = this.onEditStart({ id: container.dataset.id });
-    this.showModal("edit");
-    if (result.success) {
-      this.populateEditForm(result.todo);
-    }
-  }
-
-  handleEditSubmit(event) {
+  onCreateSubmit(event) {
     event.preventDefault();
     const values = this.getFormValues();
-    const result = this.onEditSubmit(values, this.currentEditingId);
-    if (result.success) {
-      this.replaceTodo(result.todo);
-      this.closeModal();
-    }
+    this.onAdd(values);
   }
 
-  handleDeleteTodo(container) {
-    const result = this.onDelete({ id: container.dataset.id });
-    if (result.success) {
-      this.removeTodo(result.id);
-    }
+  onOpenEditModal(container) {
+    const id = container.dataset.id;
+    this.onEditStart(id);
   }
 
-  handleCancelModal() {
+  onEdit(event) {
+    event.preventDefault();
+    const values = this.getFormValues();
+    this.onEditSubmit(values);
+  }
+
+  onDeleteTodo(container) {
+    this.onDelete({ id: container.dataset.id });
+  }
+
+  onCancelModal() {
     this.closeModal();
   }
 
-  handleToggleComplete(container) {
+  onToggleComplete(container) {
     this.onCheck(container.dataset.id);
     this.toggleStrikethrough(target, container);
   }
@@ -160,8 +144,8 @@ export class View {
   populateEditForm(todo) {
     const { title, priority, dueDate, id } = todo;
     this.form.querySelector("[name='title']").value = title || "";
-    this.form.querySelector("[name='priority'").value = priority || "";
-    this.form.querySelector("[name='due-date'").value = dueDate || "";
+    this.form.querySelector("[name='priority']").value = priority || "";
+    this.form.querySelector("[name='due-date']").value = dueDate || "";
   }
 
   resetForm() {
