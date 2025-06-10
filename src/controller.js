@@ -153,7 +153,6 @@ export class Controller {
   }
 
   initializeApp() {
-    this.model.loadTodos();
     const todos = this.model.todoItems;
     this.view.displayExistingTodos(todos);
   }

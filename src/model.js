@@ -1,29 +1,34 @@
 export class Model {
   constructor() {
     // some dummy data for testing purposes
-    this.todos = [
-      {
-        dueDate: "2025-07-25",
-        id: "01a76d3c-223d-4320-ab05-a00f359e2148",
-        priority: "High",
-        title: "Go to the library",
-        status: "Complete",
-      },
-      {
-        dueDate: "2025-07-20",
-        id: "01a76d3c-223d-4320-ab05-a00f359e2141",
-        priority: "Low",
-        title: "Take out the trash",
-        status: "Complete",
-      },
-      {
-        dueDate: "2025-06-14",
-        id: "01a76d3c-223d-4320-ab05-a00f359e2149",
-        priority: "Medium",
-        title: "Clean out the fridge",
-        status: "Incomplete",
-      },
-    ];
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      this.todos = JSON.parse(storedTodos);
+    } else {
+      this.todos = [
+        {
+          dueDate: "2025-07-25",
+          id: "01a76d3c-223d-4320-ab05-a00f359e2148",
+          priority: "High",
+          title: "Go to the library",
+          status: "Complete",
+        },
+        {
+          dueDate: "2025-07-20",
+          id: "01a76d3c-223d-4320-ab05-a00f359e2141",
+          priority: "Low",
+          title: "Take out the trash",
+          status: "Complete",
+        },
+        {
+          dueDate: "2025-06-14",
+          id: "01a76d3c-223d-4320-ab05-a00f359e2149",
+          priority: "Medium",
+          title: "Clean out the fridge",
+          status: "Incomplete",
+        },
+      ];
+    }
   }
 
   addTodo({ title, dueDate, priority }) {
@@ -106,15 +111,6 @@ export class Model {
 
   saveTodos() {
     localStorage.setItem("todos", JSON.stringify(this.todos));
-  }
-
-  loadTodos() {
-    console.log("Loading from local storage");
-    const storedTodos = localStorage.getItem("todos");
-    if (storedTodos) {
-      const loadedTodos = JSON.parse(storedTodos);
-      this.todos = [...this.todos, ...loadedTodos];
-    }
   }
 }
 
