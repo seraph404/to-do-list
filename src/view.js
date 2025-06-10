@@ -102,7 +102,7 @@ export class View {
 
   onToggleComplete(target, container) {
     this.onCheck(container.dataset.id);
-    this.toggleStrikethrough(target, container);
+    this.toggleStrikethrough({ target, container });
   }
 
   // ========== Modal Controls ========== //
@@ -143,6 +143,7 @@ export class View {
   // populate "edit" form with existing content
   populateEditForm(todo) {
     const { title, priority, dueDate, id } = todo;
+    console.log("populateEditForm", dueDate);
     this.form.querySelector("[name='title']").value = title || "";
     this.form.querySelector("[name='priority']").value = priority || "";
     this.form.querySelector("[name='due-date']").value = dueDate || "";
@@ -164,7 +165,7 @@ export class View {
   // ========== Todo Rendering ========== //
 
   // creates all of the DOM stuff needed for an item
-  displayNewTodo({ id, title, priority, dueDate }) {
+  displayNewTodo({ id, title, priority, dueDate, status }) {
     // elements
     const todoItemContainer = document.createElement("div");
     const todoDetails = document.createElement("div");
@@ -198,6 +199,9 @@ export class View {
     if (dueDate) {
       todoDate.textContent = `Due: ${dueDate}`;
     }
+    if (status === "Complete") {
+      todoTitle.style.textDecoration = "line-through";
+    }
     todoActions.classList.add("todo-actions");
     checkbox.classList.add("todo-checkbox");
 
@@ -225,22 +229,36 @@ export class View {
   }
 
   // appends to the end of the list
-  appendNewTodo({ id, title, priority, dueDate }) {
+  appendNewTodo({ id, title, priority, dueDate, status }) {
     this.todoItems.append(
-      this.displayNewTodo({ id, title, priority, dueDate })
+      this.displayNewTodo({ id, title, priority, dueDate, status })
     );
   }
 
-  replaceTodo({ id, title, priority, dueDate }) {
+  replaceTodo({ id, title, priority, dueDate, status }) {
+    //console.log("Replacing todo");
     const oldNode = this.todoItems.querySelector(`[data-id="${id}"]`);
     if (oldNode) {
-      const newNode = this.displayNewTodo({ id, title, priority, dueDate });
+      const newNode = this.displayNewTodo({
+        id,
+        title,
+        priority,
+        dueDate,
+        status,
+      });
       this.todoItems.replaceChild(newNode, oldNode);
     }
+    //console.log("replaceTodo status is...", status);
   }
 
-  toggleStrikethrough(target, container) {
-    const title = container.querySelector(".todo-title");
+  toggleStrikethrough({ target, container, todoTitle }) {
+    console.log("Toggling strikethrough...");
+    if (container) {
+      const title = container.querySelector(".todo-title");
+    } else {
+      const title = todoTitle;
+    }
+    //console.log("title is ", title);
 
     if (title.style.textDecoration === "line-through") {
       title.style.textDecoration = "none";

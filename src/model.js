@@ -44,6 +44,10 @@ export class Model {
     if (todoItem.priority !== priority) {
       todoItem.priority = priority;
     }
+
+    if (todoItem.status !== status) {
+      todoItem.status = status;
+    }
     console.log("After edit:", todoItem);
     return { success: true, todo: todoItem };
   }

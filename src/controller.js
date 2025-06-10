@@ -63,8 +63,9 @@ export class Controller {
       console.error("Validation failed!", error);
     }
     const id = this.currentEditingId;
-    //const status = this.model.getTodoStatus({ id });
-    const todo = { id, title, dueDate, priority };
+    const status = this.model.getTodoStatus({ id });
+    //console.log("onEditSubmit status is ", status);
+    //const todo = { id, title, dueDate, priority, status };
     const result = this.model.editTodo({
       id,
       title,
@@ -73,7 +74,13 @@ export class Controller {
       status,
     });
     if (result.success) {
-      this.view.replaceTodo(todo);
+      this.view.replaceTodo({
+        id,
+        title,
+        priority,
+        dueDate,
+        status,
+      });
       this.view.closeModal();
     }
   }
