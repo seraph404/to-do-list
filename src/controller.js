@@ -93,11 +93,18 @@ export class Controller {
   }
 
   onCheck(id) {
+    console.log("check");
     const currentStatus = this.model.getTodoStatus({ id });
     if (currentStatus === "Complete") {
-      this.model.todoStatus = { id, status: "Incomplete" };
+      const newStatus = "Incomplete";
+      this.model.todoStatus = { id, status: newStatus };
+      // TODO: Remove strikethrough
+      this.view.toggleStrikethrough({ id, newStatus });
     } else if (currentStatus === "Incomplete") {
-      this.model.todoStatus = { id, status: "Complete" };
+      const newStatus = "Complete";
+      this.model.todoStatus = { id, status: newStatus };
+      // TODO: Add strikethrough
+      this.view.toggleStrikethrough({ id, newStatus });
     }
   }
 

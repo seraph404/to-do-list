@@ -66,7 +66,7 @@ export class View {
         this.onCancelModal();
         break;
       case "toggle-complete":
-        this.onToggleComplete(target, container);
+        this.onToggleComplete(container);
         break;
     }
   }
@@ -100,9 +100,11 @@ export class View {
     this.closeModal();
   }
 
-  onToggleComplete(target, container) {
+  onToggleComplete(container) {
+    // changes the todo status
     this.onCheck(container.dataset.id);
-    this.toggleStrikethrough({ target, container });
+    // applies the styling
+    //this.toggleStrikethrough({ target, container });
   }
 
   // ========== Modal Controls ========== //
@@ -199,11 +201,15 @@ export class View {
     if (dueDate) {
       todoDate.textContent = `Due: ${dueDate}`;
     }
-    if (status === "Complete") {
-      todoTitle.style.textDecoration = "line-through";
-    }
+
     todoActions.classList.add("todo-actions");
     checkbox.classList.add("todo-checkbox");
+
+    // completion rendering rules
+    if (status === "Complete") {
+      todoTitle.style.textDecoration = "line-through";
+      checkbox.checked = true;
+    }
 
     // text
     todoTitle.textContent = title;
@@ -251,19 +257,15 @@ export class View {
     //console.log("replaceTodo status is...", status);
   }
 
-  toggleStrikethrough({ target, container, todoTitle }) {
+  toggleStrikethrough({ id, newStatus }) {
     console.log("Toggling strikethrough...");
-    if (container) {
-      const title = container.querySelector(".todo-title");
-    } else {
-      const title = todoTitle;
-    }
-    //console.log("title is ", title);
+    const todo = this.todoItems.querySelector(`[data-id="${id}"]`);
+    const title = todo.querySelector(".todo-title");
 
-    if (title.style.textDecoration === "line-through") {
-      title.style.textDecoration = "none";
-    } else {
+    if (newStatus === "Complete") {
       title.style.textDecoration = "line-through";
+    } else if (newStatus === "Incomplete") {
+      title.style.textDecoration = "none";
     }
   }
 
