@@ -10,30 +10,30 @@ To begin with, I created a list of functionality to define the project's scope.
 
 ### Project Scoping
 
-#### To-do lists
+#### ~~To-do lists~~
 
-- Each user starts with a default to-do list.
-- A list has a name and a description.
-- A list contains to-do items.
-- Users can create, delete, and edit lists.
-- Deleting a list deletes all to-do items inside it.
+- ~~Each user starts with a default to-do list.~~
+- ~~A list has a name and a description.~~
+- ~~A list contains to-do items.~~
+- ~~Users can create, delete, and edit lists.~~
+- ~~Deleting a list deletes all to-do items inside it.~~
 
 #### To-do items
 
-- A to-do item has a title, description, due date, and priority.
+- A to-do item has a title, ~~description,~~ due date, and priority.
 - A to-do item has a completion status (complete / incomplete).
 - Users can create, edit, and delete to-do items.
 - Users can change a to-do item's priority.
-- Users can move a to-do item to a different project.
+- ~~Users can move a to-do item to a different project.~~
 
-#### Optional enhancements
+#### ~~Optional enhancements~~
 
-- A to-do item can optionally contain sub-items.
-- A sub-item has a title and description.
-- A sub-item has a completion status (complete / incomplete).
-- Users can create, edit, and delete sub-items.
-- When all sub-items are complete, the parent item can be marked as complete.
-- When a to-do list item is deleted, its sub-items are also deleted.
+- ~~A to-do item can optionally contain sub-items.~~
+- ~~A sub-item has a title and description.~~
+- ~~A sub-item has a completion status (complete / incomplete).~~
+- ~~Users can create, edit, and delete sub-items.~~
+- ~~When all sub-items are complete, the parent item can be marked as complete.~~
+- ~~When a to-do list item is deleted, its sub-items are also deleted.~~
 
 ## Planning
 
@@ -92,17 +92,24 @@ I don't expect these to be perfect - but they at least give me something to star
 - Using MVC architecture for this app was probably overkill and deeply overcomplicated this process, despite it being a good learning experience. If I could do it all over, I would have chosen a different way to separate out my logic which didn't involve switching between 3-4 different module files.
 - The UI became a pretty big stumbling block because I didn't do the due diligence of completely designing and building out a functionally complete UI from the beginning. I did a simple design that was missing a ton of features thinking that I could build it out as I continued to work. This didn't pan out. I had to stop what I was doing, complete the frontend design, and then rework my View model to ensure it followed the new structure.
 - Despite all of the planning I did, I feel like I still jumped into things too early without fully working out the logic.
-- I feel the least badly about this one - I overestimated the development effort of the simplest features and in my initial scope planning, I think I went a little overboard. I think this is something that will improve over time as I become more familiar with writing code for certain workflows and have experience knowing the effort associated with them.
+- I feel the least badly about this one - I overestimated the development effort of the simplest features and in my initial scope planning, I think I went a little overboard. I think this is something that will improve over time as I become more familiar with writing code for certain workflows and have experience knowing the effort associated with them. In the end, I de-scoped todo descriptions and projects, but overall I'm pleased with the outcome.
 
 ## Highlights
 
-I had a particularly exciting revelation about how `return` values aren't just about outputting a result, but can be used to communicate useful information back to the caller. I already knew how to define retur values but I didn't fully grasp how powerful they are in structuring code, especially across modules. While working on my Controller, I changed my approach to return an object containing: (1) a `success` boolean to indicate whether the operation worked, and (2) a `todo` item or `id` needed by the View. Then, in the view, I assigned the result to a variable:
+I had a particularly exciting revelation about how `return` values aren't just about outputting a result, but can be used to communicate useful information back to the caller. I already knew how to define retur values but I didn't fully grasp how powerful they are in structuring code, especially across modules. While working on my Model, I changed my approach to return an object containing: (1) a `success` boolean to indicate whether the operation worked, and (2) a `todo` item or `id` needed by the Controller. Then, in the Controller, I assigned the result to a variable:
 
 ```javascript
-const result = this.onAdd(formValues);
+const result = this.model.addTodo({
+  title,
+  dueDate,
+  priority,
+});
+
 if (result.success) {
-  this.displayNewTodo(result.todo);
+  this.view.resetForm();
+  this.view.closeModal();
+  this.view.appendNewTodo(result.todo);
 }
 ```
 
-This let me both run the Controller method and preserve its response, giving the View just enough information to do its job. It's a simple idea, but it made something click inside of my head.
+This let me both run the Model method and preserve its response, giving the Controller just enough information to do its job. It's a simple idea, but it made something click inside of my head.
