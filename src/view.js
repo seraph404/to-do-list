@@ -198,6 +198,8 @@ export class View {
       todoPriority.textContent = priority;
     }
     todoDate.classList.add("todo-date");
+
+    // TODO: If the due date is in the past, make it appear in red.
     if (dueDate) {
       todoDate.textContent = `Due: ${dueDate}`;
     }
