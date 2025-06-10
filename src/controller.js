@@ -48,16 +48,34 @@ export class Controller {
     }
     this.currentEditingId = id;
     this.view.showModal("edit");
+    const status = this.model.getTodoStatus({ id });
+    console.log("onEditStart", status);
+    console.log("onEditStart", todo);
     this.view.populateEditForm(todo);
   }
 
   onEditSubmit({ title, dueDate, priority }) {
-    this.validateInput({ title, dueDate, priority });
+    console.log("onEditSubmit", dueDate);
+    try {
+      this.validateInput({ title, dueDate, priority });
+    } catch (error) {
+      // TODO: Make this.view.showValidationError for user-facing errors
+      console.error("Validation failed!", error);
+    }
     const id = this.currentEditingId;
+    //const status = this.model.getTodoStatus({ id });
     const todo = { id, title, dueDate, priority };
-    this.model.editTodo({ id, title, dueDate, priority });
-    this.view.replaceTodo(todo);
-    this.view.closeModal();
+    const result = this.model.editTodo({
+      id,
+      title,
+      dueDate,
+      priority,
+      status,
+    });
+    if (result.success) {
+      this.view.replaceTodo(todo);
+      this.view.closeModal();
+    }
   }
 
   onDelete({ id }) {
@@ -68,14 +86,12 @@ export class Controller {
   }
 
   onCheck(id) {
-    const todo = this.model.getTodoFromId(id);
-    if (!todo) {
-      console.warn(`No todo found for ID: ${id}`);
-      return;
+    const currentStatus = this.model.getTodoStatus({ id });
+    if (currentStatus === "Complete") {
+      this.model.todoStatus = { id, status: "Incomplete" };
+    } else if (currentStatus === "Incomplete") {
+      this.model.todoStatus = { id, status: "Complete" };
     }
-
-    const newStatus = todo.status === "Complete" ? "Incomplete" : "Complete";
-    this.model.todoStatus = { id, status: newStatus };
   }
 
   todoExists(id) {
