@@ -3,14 +3,14 @@ export class Model {
     // some dummy data for testing purposes
     this.todos = [
       {
-        dueDate: "06-07-25",
+        dueDate: "2025-07-25",
         id: "01a76d3c-223d-4320-ab05-a00f359e2148",
         priority: "High",
         title: "Go to the library",
         status: "Incomplete",
       },
       {
-        dueDate: "06-12-25",
+        dueDate: "2025-06-14",
         id: "01a76d3c-223d-4320-ab05-a00f359e2149",
         priority: "Medium",
         title: "Clean out the fridge",
@@ -19,9 +19,8 @@ export class Model {
     ];
   }
 
-  addTodo({ id, title, dueDate, priority }) {
+  addTodo({ title, dueDate, priority }) {
     const todoItem = new TodoItem({
-      id: id,
       title: title,
       dueDate: dueDate,
       priority: priority,
@@ -30,20 +29,23 @@ export class Model {
     return { success: true, todo: todoItem };
   }
 
-  editTodo({ id, title, dueDate, priority }) {
-    const todo = this.getTodoFromId(id);
+  editTodo({ id, title, dueDate, priority, status }) {
+    const todoItem = this.getTodoFromId(id);
+    console.log("Before edit:", todoItem);
     // check if field needs to be changed, then change it
-    if (todo.title !== title) {
-      todo.title = title;
+    if (todoItem.title !== title) {
+      todoItem.title = title;
     }
 
-    if (todo.dueDate !== dueDate) {
-      todo.dueDate = dueDate;
+    if (todoItem.dueDate !== dueDate) {
+      todoItem.dueDate = dueDate;
     }
 
-    if (todo.priority !== priority) {
-      todo.priority = priority;
+    if (todoItem.priority !== priority) {
+      todoItem.priority = priority;
     }
+    console.log("After edit:", todoItem);
+    return { success: true, todo: todoItem };
   }
 
   deleteTodo({ id }) {
@@ -62,28 +64,33 @@ export class Model {
 
   set todoStatus({ id, status }) {
     const todo = this.getTodoFromId(id);
-    console.log("Looking for status...");
     if (todo) {
+      const oldStatus = todo.status;
       todo.status = status;
-      console.log(`Todo ${id} status updated to ${status}`);
+      console.log(`Todo status changed from ${oldStatus} to ${status}`);
     } else {
       console.warn(`Todo with ID ${id} not found.`);
     }
   }
 
+  getTodoStatus({ id }) {
+    const todo = this.getTodoFromId(id);
+    return todo.status;
+  }
+
   getTodoFromId(id) {
-    console.log("Searching for match...");
+    //console.log("Searching for match...");
 
     const match = this.todoItems.find((element) => {
-      console.log("match", element.id);
+      //console.log("match", element.id);
       return element.id === id;
     });
 
     if (match) {
-      console.log("Match found!");
-      console.log("Status:", match.status);
+      //console.log("Match found!");
+      //console.log("Status:", match.status);
     } else {
-      console.log("No match found for ID:", id);
+      //console.log("No match found for ID:", id);
     }
 
     return match;
