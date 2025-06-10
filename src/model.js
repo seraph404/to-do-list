@@ -19,13 +19,12 @@ export class Model {
     ];
   }
 
-  addTodo({ id, title, dueDate, priority, status }) {
+  addTodo({ id, title, dueDate, priority }) {
     const todoItem = new TodoItem({
       id: id,
       title: title,
       dueDate: dueDate,
       priority: priority,
-      status: status,
     });
     this.todos.push(todoItem);
     return { success: true, todo: todoItem };
