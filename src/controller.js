@@ -86,10 +86,16 @@ export class Controller {
   }
 
   onDelete({ id }) {
-    if (this.todoExists(id)) {
-      this.model.deleteTodo({ id });
+    if (
+      confirm(
+        "Are you sure you want to permanently delete this item? This action cannot be undone."
+      )
+    ) {
+      if (this.todoExists(id)) {
+        this.model.deleteTodo({ id });
+      }
+      this.view.removeTodo(id);
     }
-    this.view.removeTodo(id);
   }
 
   onCheck(id) {
