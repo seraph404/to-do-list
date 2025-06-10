@@ -20,20 +20,19 @@ export class Model {
   }
 
   addTodo({ id, title, dueDate, priority, status }) {
-    this.status = "Incomplete";
-    const newTodo = new TodoItem({
+    const todoItem = new TodoItem({
       id: id,
       title: title,
       dueDate: dueDate,
       priority: priority,
       status: status,
     });
-    this.todos.push(newTodo);
+    this.todos.push(todoItem);
+    return { success: true, todo: todoItem };
   }
 
   editTodo({ id, title, dueDate, priority }) {
     const todo = this.getTodoFromId(id);
-    console.log("Todo before editing:", todo);
     // check if field needs to be changed, then change it
     if (todo.title !== title) {
       todo.title = title;
@@ -46,17 +45,9 @@ export class Model {
     if (todo.priority !== priority) {
       todo.priority = priority;
     }
-
-    console.log("Todo after editing:", todo);
   }
 
   deleteTodo({ id }) {
-    console.log(
-      "Before deletion:",
-      this.todos.map((todo) => todo.id)
-    );
-    console.log("Deleting todo with ID:", id);
-
     this.todos = this.todos.filter((todo) => {
       const todoId = String(todo.id).trim();
       const targetId = String(id).trim();
@@ -64,11 +55,6 @@ export class Model {
       console.log(`Compare: ${todoId} !== ${targetId} → ${keep}`);
       return keep;
     });
-
-    console.log(
-      "After deletion:",
-      this.todos.map((todo) => todo.id)
-    );
   }
 
   get todoItems() {
@@ -106,7 +92,13 @@ export class Model {
 }
 
 export class TodoItem {
-  constructor({ id, title, dueDate, priority, status = "Incomplete" }) {
+  constructor({
+    id = crypto.randomUUID(),
+    title,
+    dueDate,
+    priority,
+    status = "Incomplete",
+  }) {
     this.id = id;
     this.title = title;
     this.dueDate = dueDate;
