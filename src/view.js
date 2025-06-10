@@ -66,7 +66,7 @@ export class View {
         this.onCancelModal();
         break;
       case "toggle-complete":
-        this.onToggleComplete(container);
+        this.onToggleComplete(target, container);
         break;
     }
   }
@@ -100,7 +100,7 @@ export class View {
     this.closeModal();
   }
 
-  onToggleComplete(container) {
+  onToggleComplete(target, container) {
     this.onCheck(container.dataset.id);
     this.toggleStrikethrough(target, container);
   }
