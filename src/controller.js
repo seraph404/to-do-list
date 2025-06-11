@@ -25,6 +25,7 @@ export class Controller {
     } catch (error) {
       // TODO: Make this.view.showValidationError for user-facing errors
       console.error("Validation failed!", error);
+      return;
     }
 
     const result = this.model.addTodo({
@@ -59,13 +60,11 @@ export class Controller {
     try {
       this.validateInput({ title, dueDate, priority });
     } catch (error) {
-      // TODO: Make this.view.showValidationError for user-facing errors
       console.error("Validation failed!", error);
+      return;
     }
     const id = this.currentEditingId;
     const status = this.model.getTodoStatus({ id });
-    //console.log("onEditSubmit status is ", status);
-    //const todo = { id, title, dueDate, priority, status };
     const result = this.model.editTodo({
       id,
       title,
@@ -129,6 +128,8 @@ export class Controller {
   validateTitle(title) {
     // if title doesn't exist or is blank
     if (!title || title.trim() === "") {
+      const error = "This field is required.";
+      this.view.showValidationError("title", error);
       throw Error("Title field is required.");
     }
     return true;
@@ -149,6 +150,8 @@ export class Controller {
     const date = new Date(dueDate);
     const currentDate = new Date();
     if (date < currentDate) {
+      const error = "Due date can't be before current date.";
+      this.view.showValidationError("dueDate", error);
       throw Error("Due date can't be before current date.");
       // TODO: Make this.view.showValidationError for user-facing errors
     }

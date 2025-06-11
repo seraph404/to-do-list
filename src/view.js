@@ -152,6 +152,7 @@ export class View {
   }
 
   resetForm() {
+    this.clearValidationErrors();
     this.form.reset();
   }
 
@@ -162,6 +163,47 @@ export class View {
       priority: formData.get("priority"),
       dueDate: formData.get("due-date"),
     };
+  }
+
+  getFormElements() {
+    const elements = {
+      title: this.form.querySelector('[name="title"]'),
+      priority: this.form.querySelector('[name="priority"]'),
+      dueDate: this.form.querySelector('[name="due-date"]'),
+    };
+    return elements;
+  }
+
+  showValidationError(field, error) {
+    this.clearValidationErrors(); // prevents appending multiple times
+    const elements = this.getFormElements();
+    if (field === "dueDate") {
+      const div = this.createValidationError(error);
+      elements.dueDate.parentNode.append(div);
+    } else if (field === "title") {
+      const div = this.createValidationError(error);
+      elements.title.parentNode.append(div);
+    }
+  }
+
+  createValidationError(error) {
+    const div = document.createElement("div");
+    const p = document.createElement("p");
+    p.textContent = error;
+    p.style.color = "red";
+    p.style.fontSize = "smaller";
+    div.style.width = "150px";
+    div.style.marginTop = "5px";
+    div.classList.add("validation-error");
+    div.append(p);
+    return div;
+  }
+
+  clearValidationErrors() {
+    const errorDivs = document.querySelectorAll(".validation-error");
+    errorDivs.forEach((div) => {
+      div.remove();
+    });
   }
 
   // ========== Todo Rendering ========== //
