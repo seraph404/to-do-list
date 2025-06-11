@@ -183,6 +183,9 @@ export class View {
     } else if (field === "title") {
       const div = this.createValidationError(error);
       elements.title.parentNode.append(div);
+    } else if (field === "priority") {
+      const div = this.createValidationError(error);
+      elements.title.parentNode.append(div);
     }
   }
 

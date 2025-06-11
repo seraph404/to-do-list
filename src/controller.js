@@ -23,7 +23,6 @@ export class Controller {
     try {
       this.validateInput({ title, dueDate, priority });
     } catch (error) {
-      // TODO: Make this.view.showValidationError for user-facing errors
       console.error("Validation failed!", error);
       return;
     }
@@ -103,12 +102,10 @@ export class Controller {
     if (currentStatus === "Complete") {
       const newStatus = "Incomplete";
       this.model.todoStatus = { id, status: newStatus };
-      // TODO: Remove strikethrough
       this.view.toggleStrikethrough({ id, newStatus });
     } else if (currentStatus === "Incomplete") {
       const newStatus = "Complete";
       this.model.todoStatus = { id, status: newStatus };
-      // TODO: Add strikethrough
       this.view.toggleStrikethrough({ id, newStatus });
     }
   }
@@ -138,22 +135,22 @@ export class Controller {
   validatePriority(priority) {
     const allowed = ["Low", "Medium", "High", "Unprioritized"];
     if (!allowed.includes(priority)) {
+      const error = "Invalid priority.";
+      this.view.showValidationError("priority", error);
       throw Error("Invalid priority");
     }
     return true;
   }
 
   validateDueDate(dueDate) {
-    // TODO: Disallow users to set a due date that is in the past.
     if (!dueDate) return true;
 
     const date = new Date(dueDate);
     const currentDate = new Date();
     if (date < currentDate) {
-      const error = "Due date can't be before current date.";
+      const error = "Due date must be set in the future.";
       this.view.showValidationError("dueDate", error);
-      throw Error("Due date can't be before current date.");
-      // TODO: Make this.view.showValidationError for user-facing errors
+      throw Error("Due date must be set in the future.");
     }
 
     if (isNaN(date.getTime())) {
