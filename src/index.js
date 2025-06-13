@@ -11,13 +11,11 @@ const todoForm = document.querySelector("#todo-form");
 
 /* initiate modules */
 const model = new Model();
-window.model = model; // allows me to test in browser console
 const view = new View({
   openModalBtn: openModalBtn,
   todoItems: todoItemsDiv,
   todoForm: todoForm,
 });
 const controller = new Controller(model, view);
-window.controller = controller; // allows me to test in browser console
 
 controller.initializeApp();
