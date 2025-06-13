@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-do App</title>
+  <script defer src="main.js"></script></head>
+  <body>
+    <div class="container">
+      <header class="header"><h1>Todos();</h1></header>
+      <main>
+        <dialog class="modal">
+          <form id="todo-form">
+            <h2>Create To-Do</h2>
+            <div>
+              <label for="title">Title</label>
+              <input type="text" name="title" required />
+            </div>
+            <div class="flex">
+              <div>
+                <label for="priority">Priority</label>
+                <select name="priority">
+                  <option value="Unprioritized">Unprioritized</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div>
+                <label for="due-date">Due date</label>
+                <input name="due-date" type="date" />
+              </div>
+            </div>
+            <div class="modal-buttons">
+              <input
+                data-action="dismiss-todo-modal"
+                type="button"
+                value="Cancel"
+              />
+              <input
+                data-action="submit-create-todo"
+                id="submit-modal"
+                type="submit"
+                value="Create to-do"
+              />
+            </div>
+          </form>
+        </dialog>
+        <div class="button-container">
+          <button data-action="open-create-todo" type="button">
+            + Add new item
+          </button>
+        </div>
+        <div class="todo-items"></div>
+      </main>
+    </div>
+  </body>
+</html>
