@@ -21,7 +21,7 @@ export class Model {
           status: "Complete",
         },
         {
-          dueDate: "2025-06-14",
+          dueDate: "2025-06-11",
           id: "01a76d3c-223d-4320-ab05-a00f359e2149",
           priority: "Medium",
           title: "Clean out the fridge",
