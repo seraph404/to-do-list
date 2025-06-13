@@ -1,4 +1,6 @@
 import { Controller } from "./controller.js";
+import { format } from "date-fns";
+import { isAfter } from "date-fns";
 
 export class View {
   // the constructor arguments are items being passed in from index.js
@@ -244,9 +246,13 @@ export class View {
     }
     todoDate.classList.add("todo-date");
 
-    // TODO: If the due date is in the past, make it appear in red.
     if (dueDate) {
-      todoDate.textContent = `Due: ${dueDate}`;
+      todoDate.textContent = `Due: ${format(dueDate, "MM/dd/yyyy")}`;
+      // if the due date is in the past, make it appear in red.
+      const isOverdue = isAfter(new Date(), new Date(dueDate));
+      if (isOverdue) {
+        todoDate.style.color = "red";
+      }
     }
 
     todoActions.classList.add("todo-actions");
