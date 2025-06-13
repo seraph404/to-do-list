@@ -217,3 +217,6 @@ form label {
   font-weight: bold;
   cursor: pointer;
 }
+.completed-date {
+  color: inherit !important;
+}

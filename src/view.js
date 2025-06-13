@@ -313,11 +313,14 @@ export class View {
     console.log("Toggling strikethrough...");
     const todo = this.todoItems.querySelector(`[data-id="${id}"]`);
     const title = todo.querySelector(".todo-title");
+    const dueDate = todo.querySelector(".todo-date");
 
     if (newStatus === "Complete") {
       title.style.textDecoration = "line-through";
+      dueDate.classList.add("completed-date");
     } else if (newStatus === "Incomplete") {
       title.style.textDecoration = "none";
+      dueDate.classList.remove("completed-date");
     }
   }
 
